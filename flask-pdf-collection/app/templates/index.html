@@ -7,12 +7,15 @@
     <title>A Very Serious Sports Page</title>
 </head>
 <body>
-    <header>
-        <h1>A Very Serious Sports Page</h1>
-        <form action="{{ url_for('main.search') }}" method="GET">
-            <input type="text" name="query" placeholder="Search Past Issues..." required>
-            <button type="submit">Search</button>
-        </form>
+    <header style="display: flex; align-items: center; gap: 24px;">
+        <img src="{{ url_for('static', filename='Bjonk_Logo_2.png') }}" alt="Site Logo" style="height:100px;">
+        <div>
+            <h1 style="margin: 0;">A Very Serious Sports Page</h1>
+            <form action="{{ url_for('main.search') }}" method="GET" style="margin-top: 8px;">
+                <input type="text" name="query" placeholder="Search Past Issues..." required>
+                <button type="submit">Search</button>
+            </form>
+        </div>
     </header>
     <main>
         <h2>Past Seasons:</h2>
