@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>A Very Serious Sports Page</title>
+</head>
+<body>
+    <header>
+        <h1>A Very Serious Sports Page</h1>
+        <form action="{{ url_for('main.search') }}" method="GET">
+            <input type="text" name="query" placeholder="Search Past Issues..." required>
+            <button type="submit">Search</button>
+        </form>
+    </header>
+    <main>
+        <h2>Past Seasons:</h2>
+        <ul>
+            {% for dir, files in grouped_pdfs.items() %}
+                {% if dir %}
+                    <li><strong>{{ dir }}</strong>
+                        <ul>
+                            {% for file in files %}
+                                <li>
+                                    <a href="{{ url_for('main.view_pdf', filename=dir ~ '/' ~ file) }}">{{ file }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% else %}
+                    {% for file in files %}
+                        <li>
+                            <a href="{{ url_for('main.view_pdf', filename=file) }}">{{ file }}</a>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+</html>
