@@ -4,7 +4,7 @@ from natsort import natsorted
 from collections import defaultdict
 from .pdf_utils import get_pdf_list, search_pdfs
 
-bp = Blueprint('main', __name__)
+main = Blueprint('main', __name__)
 
 def group_pdfs_by_directory(pdfs):
     grouped = defaultdict(list)
@@ -16,21 +16,25 @@ def group_pdfs_by_directory(pdfs):
             grouped[''].append(parts[0])
     return dict(grouped)
 
-@bp.route('/')
-def index():
+@main.route('/')
+def home():
+    return render_template('home.html')
+
+@main.route('/ass')
+def ass():
+    # A Serious Sports (ASS)
     pdfs = get_pdf_list(current_app.config['PDF_FOLDER'])
     natsorted_pdfs = natsorted(pdfs)
     grouped_pdfs = group_pdfs_by_directory(natsorted_pdfs)
-    return render_template('index.html', grouped_pdfs=grouped_pdfs)
+    return render_template('ass.html', grouped_pdfs=grouped_pdfs)
 
-
-@bp.route('/pdf/<path:filename>')
+@main.route('/pdf/<path:filename>')
 def view_pdf(filename):
     return send_from_directory(current_app.config['PDF_FOLDER'], filename)
 
-@bp.route('/search', methods=['GET'])
+@main.route('/search', methods=['GET'])
 def search():
     query = request.args.get('query')
     results = search_pdfs(current_app.config['PDF_FOLDER'], query)
     grouped_results = group_pdfs_by_directory(results)
-    return render_template('index.html', grouped_pdfs=grouped_results)
+    return render_template('ass.html', grouped_pdfs=grouped_results, query=query)

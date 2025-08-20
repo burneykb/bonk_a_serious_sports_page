@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>Bonk Fantasy News</title>
+    <title>Bonk - A.S.S</title>
 </head>
 <body>
     <header style="display: flex; align-items: center; gap: 24px;">
@@ -17,8 +17,12 @@
             </form>
         </div>
     </header>
+    <nav style="background: #eee; padding: 12px;">
+        <a href="{{ url_for('main.home') }}" style="margin-right: 16px;">Home</a>
+        <a href="{{ url_for('main.pdfs') }}">PDFs</a>
+    </nav>
     <main>
-        <h2>Past Seasons:</h2>
+        <h2>Past :</h2>
         <ul>
             {% for dir, files in grouped_pdfs.items() %}
                 {% if dir %}

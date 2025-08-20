@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Bonk - A.S.S.{% endblock %}
+{% block content %}
+<div class="container my-5">
+    <div class="text-center mb-4">
+        <h1 class="display-5">Bonk - A Serious Sports Page</h1>
+        <p><em>All articles written and published by Sunny Day and Chuck Downfield</em></p>
+    </div>
+    <form action="{{ url_for('main.search') }}" method="GET" class="row g-3 justify-content-center mb-5">
+        <div class="col-auto">
+            <input type="text" name="query" class="form-control" placeholder="Search all ASS issues..." required>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
+    {% if query %}
+        <div class="alert alert-primary" role="alert">
+            Showing results for "<strong>{{ query }}</strong>"
+        </div>
+    {% endif %}
+    <h2 class="mb-3">Past Seasons:</h2>
+    <div class="accordion mb-3" id="pdfAccordion">
+        {% for dir, files in grouped_pdfs.items() %}
+            {% if dir %}
+                {% set collapse_id = 'collapse_' ~ loop.index %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading_{{ loop.index }}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ collapse_id }}" aria-expanded="false" aria-controls="{{ collapse_id }}">
+                            {{ dir }}
+                        </button>
+                    </h2>
+                    <div id="{{ collapse_id }}" class="accordion-collapse collapse" aria-labelledby="heading_{{ loop.index }}" data-bs-parent="#pdfAccordion">
+                        <div class="accordion-body p-0">
+                            <ul class="list-group list-group-flush">
+                                {% for file in files %}
+                                    <li class="list-group-item list-group-item-action">
+                                        <a class="text-decoration-none" href="{{ url_for('main.view_pdf', filename=dir ~ '/' ~ file) }}">{{ file }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% for dir, files in grouped_pdfs.items() %}
+        {% if not dir %}
+            <ul class="list-group">
+                {% for file in files %}
+                    <li class="list-group-item">
+                        <a href="{{ url_for('main.view_pdf', filename=file) }}">{{ file }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}
