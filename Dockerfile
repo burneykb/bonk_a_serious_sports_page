@@ -1,4 +1,4 @@
-FROM python:3.13.0a1-alpine
+FROM python:3.13.0-alpine
 
 # Copy the requirements and install
 COPY requirements.txt ./
